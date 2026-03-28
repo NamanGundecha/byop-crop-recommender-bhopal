@@ -1,0 +1,5 @@
+soil_type,suitable_crops,water_retention,yield_bonus
+Black Soil,Soyabean Wheat Cotton,High,1.2
+Red Soil,Millets Pulses,Medium,1.0
+Alluvial Soil,Rice Wheat Sugarcane,High,1.1
+Laterite Soil,Gram Maize,Low,0.9

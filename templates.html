@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bhopal Crop Recommender</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: auto; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        form input, select { width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box; }
+        button { background: #4CAF50; color: white; padding: 12px; border: none; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>🌾 Bhopal Crop Recommender</h1>
+    <p>Enter expected weather & soil for top 3 profitable crops (Bhopal mandi prices).</p>
+    
+    <form method="POST">
+        <label>Avg Temperature (°C): 
+            <input type="number" name="temp" value="32" step="0.5" min="15" max="45" required>
+        </label>
+        <label>Expected Rainfall (mm): 
+            <input type="number" name="rain" value="5" step="0.1" min="0" max="100" required>
+        </label>
+        <label>Humidity (%): 
+            <input type="number" name="hum" value="65" min="30" max="100" required>
+        </label>
+        <label>Soil Type:
+            <select name="soil" required>
+                <option value="Black Soil">Black Soil (Soyabean, Wheat)</option>
+                <option value="Red Soil">Red Soil (Millets, Pulses)</option>
+                <option value="Alluvial Soil">Alluvial Soil (Rice, Sugarcane)</option>
+                <option value="Laterite Soil">Laterite Soil (Gram, Maize)</option>
+            </select>
+        </label>
+        <button type="submit">Get Crop Recommendations</button>
+    </form>
+    
+    {% if results %}
+    <h2>🥇 Top 3 Crops (Profit Score)</h2>
+    <table>
+        <tr>
+            <th>Crop</th>
+            <th>Score (%)</th>
+            <th>Price (₹/qtl)</th>
+            <th>Suitability</th>
+        </tr>
+        {% for r in results %}
+        <tr>
+            <td><strong>{{ r.crop }}</td>
+            <td>{{ "%.1f"|format(r.score) }}</td>
+            <td>₹{{ r.price }}</td>
+            <td>{% if r.score > 80 %}Excellent{% elif r.score > 60 %}Good{% else %}Fair{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    
+    <footer style="margin-top: 30px; text-align: center; font-size: 12px; color: #666;">
+        BYOP VIT 2026 | Data: eNAM Mandi + IMD Weather
+    </footer>
+</body>
+</html>

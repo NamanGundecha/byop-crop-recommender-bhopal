@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bhopal Crop Recommender</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: auto; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        form label { display: block; margin: 10px 0; }
+        form input, select { width: 100%; padding: 10px; box-sizing: border-box; }
+        button { background: #4CAF50; color: white; padding: 12px; border: none; width: 100%; font-size: 16px; cursor: pointer; }
+        .error { color: red; background: #ffe6e6; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🌾 Bhopal Crop Recommender</h1>
+    <p><strong>Enter weather forecast and soil type for personalized recommendations.</strong></p>
+    
+    <form method="POST">
+        <label>Avg Temperature (°C): 
+            <input type="number" name="temp" value="32" step="0.5" min="15" max="45" required>
+        </label>
+        <label>Expected Rainfall (mm): 
+            <input type="number" name="rain" value="5" step="0.1" min="0" max="100" required>
+        </label>
+        <label>Humidity (%): 
+            <input type="number" name="hum" value="65" min="30" max="100" required>
+        </label>
+        <label>Soil Type:
+            <select name="soil" required>
+                <option value="Black Soil">Black Soil (Soyabean, Rapeseed)</option>
+                <option value="Red Soil">Red Soil (Maize)</option>
+                <option value="Alluvial Soil">Alluvial Soil (Wheat)</option>
+                <option value="Laterite Soil">Laterite Soil (Gram)</option>
+            </select>
+        </label>
+        <button type="submit">🍀 Get Top 3 Crops</button>
+    </form>
+    
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    
+    {% if results %}
+    <h2>🥇 Top 3 Recommended Crops</h2>
+    <table>
+        <tr>
+            <th>Crop</th>
+            <th>Profit Score</th>
+            <th>Mandi Price</th>
+        </tr>
+        {% for r in results %}
+        <tr>
+            <td><strong>{{ r.crop }}</strong></td>
+            <td>{{ "%.1f"|format(r.score) }}%</td>
+            <td>₹{{ r.price }} /qtl</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p><em>Based on Bhopal mandi prices + weather suitability</em></p>
+    {% endif %}
+</body>
+</html>
